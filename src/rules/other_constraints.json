@@ -1,0 +1,60 @@
+[
+    {
+        "knob": "huge_pages",
+        "support_system": ["Linux", "Windows"],
+        "context": "At present, this setting is supported only on Linux and Windows. The setting is ignored on other systems when set to try. "
+    },
+    {
+        "knob": "huge_pages",
+        "condition": ["Linux", "shared_memory_type = 'mmap'"],
+        "context": "On Linux, it is only supported when shared_memory_type is set to mmap (the default)."
+    },
+    {
+        "knob": "wal_level",
+        "condition": "higher and equal",
+        "value": "replica",
+        "context": "But minimal WAL does not contain enough information to reconstruct the data from a base backup and the WAL logs, so replica or higher must be used to enable WAL archiving (archive_mode) and streaming replication."
+    },
+    {
+        "knob": "wal_level",
+        "condition": " minimal > replica > logical",
+        "value": "replica",
+        "context": "But minimal WAL does not contain enough information to reconstruct the data from a base backup and the WAL logs, so replica or higher must be used to enable WAL archiving (archive_mode) and streaming replication."
+    },
+    {
+        "knob": "synchronous_commit",
+        "condition": "synchronous_standby_names is empty",
+        "values": ["on", "off"],
+        "context": "If synchronous_standby_names is empty, the only meaningful settings are on and off; remote_apply, remote_write and local all provide the same local synchronization level as on."
+    },
+    {
+        "knob": "wal_buffers",
+        "condition": "wal_buffers <= 32kB",
+        "value": "wal_buffers = 32kB",
+        "context": "This value can be set manually if the automatic choice is too large or too small, but any positive value less than 32kB will be treated as 32kB."
+    },
+    {
+        "knob1": "commit_delay",
+        "condition": "no delays",
+        "knob2": "fsync",
+        "context": "Because the delay is just wasted if no other transactions become ready to commit, a delay is only performed if at least commit_siblings other transactions are active when a flush is about to be initiated. Also, no delays are performed if fsync is disabled."
+    },
+    {
+        "knob1": "recovery_min_apply_delay",
+        "relation": "delay",
+        "knob2": "hot_standby_feedback",
+        "context": "hot_standby_feedback will be delayed by use of this feature which could lead to bloat on the master; use both together with care."
+    },
+    {
+        "knob1": "jit_optimize_above_cost",
+        "relation": "larger than or equal to",
+        "knob2": "jit_above_cost",
+        "context": "It is not meaningful to set this to less than jit_above_cost, and it is unlikely to be beneficial to set it to more than jit_inline_above_cost."
+    },
+    {
+        "knob1": "jit_optimize_above_cost",
+        "relation": "smaller than or equal to",
+        "knob2": "jit_inline_above_cost",
+        "context": "It is not meaningful to set this to less than jit_above_cost, and it is unlikely to be beneficial to set it to more than jit_inline_above_cost."
+    }
+]

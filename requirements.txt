@@ -1,0 +1,12 @@
+ConfigSpace 
+scipy 
+pandas
+mysql-connector-python
+smac
+transformers
+tensorflow
+gpflow
+psycopg2-binary
+torch
+dotenv
+matplotlib

@@ -1,0 +1,182 @@
+
+// hallucinated context
+{
+    "knob1": "bgwriter_lru_multiplier",
+    "relation": "scales",
+    "knob2": "bgwriter_lru_maxpages",
+    "context": "bgwriter_lru_multiplier affects how aggressively bgwriter_lru_maxpages is applied, scaling with buffer demand."
+}
+{
+    "knob1": "effective_io_concurrency",
+    "relation": "ignored unless",
+    "knob2": "posix_fadvise",  // hallucinated knob
+    "context": "effective_io_concurrency is ignored unless the operating system supports posix_fadvise with POSIX_FADV_WILLNEED."
+}
+{
+    "knob1": "max_parallel_maintenance_workers",
+    "relation": "bounded by",
+    "knob2": "max_parallel_workers",
+    "context": "The number of parallel workers used for maintenance is limited by max_parallel_workers."
+}
+{
+    "knob1": "max_parallel_workers",
+    "relation": "bounded by",
+    "knob2": "max_worker_processes",
+    "context": "Parallel workers are taken from the pool of worker processes; the number is limited by max_worker_processes."
+}
+{
+    "knob1": "wal_level",
+    "relation": "minimum required for",
+    "knob2": "archive_mode",
+    "context": "wal_level must be at least replica for WAL archiving to be possible."
+}
+{
+    "knob1": "wal_level",
+    "relation": "minimum required for",
+    "knob2": "logical replication",
+    "context": "wal_level must be set to logical to enable logical replication."
+}
+{
+    "knob1": "synchronous_commit",
+    "relation": "requires WAL durability",
+    "knob2": "wal_sync_method",
+    "context": "synchronous_commit relies on wal_sync_method for flushing WAL safely to disk."
+}
+{
+    "knob1": "wal_writer_delay",
+    "relation": "interacts with",
+    "knob2": "wal_buffers",
+    "context": "wal_writer_delay controls how often WAL buffers are flushed; larger wal_buffers may reduce pressure."
+}
+{
+    "knob1": "checkpoint_timeout",
+    "relation": "interacts with",
+    "knob2": "max_wal_size",
+    "context": "Checkpoints are triggered by the maximum of checkpoint_timeout and max_wal_size; whichever comes first causes a checkpoint."
+}
+{
+    "knob1": "checkpoint_timeout",
+    "relation": "interacts with",
+    "knob2": "min_wal_size",
+    "context": "Frequent checkpoints can be avoided by setting min_wal_size large enough, since checkpoint_timeout only triggers if WAL has grown beyond min_wal_size."
+}
+{
+    "knob1": "wal_keep_size",
+    "relation": "interacts with",
+    "knob2": "max_slot_wal_keep_size",
+    "context": "Even if wal_keep_size is satisfied, logical replication slots can retain WAL up to max_slot_wal_keep_size."
+}
+{
+    "knob1": "wal_sender_timeout",
+    "relation": "only applies if",
+    "knob2": "max_wal_senders",
+    "context": "wal_sender_timeout applies only to WAL sender processes, which exist if max_wal_senders > 0."
+}
+{
+    "knob1": "max_standby_archive_delay",
+    "relation": "works with",
+    "knob2": "max_standby_streaming_delay",
+    "context": "These parameters control query cancellation on standbys: archive delay applies to file-based log shipping, streaming delay to replication."
+}
+{
+    "knob1": "hot_standby_feedback",
+    "relation": "alternative to",
+    "knob2": "max_standby_streaming_delay",
+    "context": "hot_standby_feedback prevents conflicts by holding back vacuum, while max_standby_streaming_delay cancels queries."
+}
+{
+    "knob1": "max_logical_replication_workers",
+    "relation": "greater than or equal to",
+    "knob2": "max_sync_workers_per_subscription",
+    "context": "Each subscription’s sync workers come from the pool of logical replication workers, so max_logical_replication_workers must be at least as large."
+}
+{
+    "knob1": "parallel_setup_cost",
+    "relation": "adds to",
+    "knob2": "parallel_tuple_cost",
+    "context": "Planner decides parallel query usefulness based on parallel_setup_cost + (parallel_tuple_cost * rows)."
+}
+{
+    "knob1": "parallel_setup_cost",
+    "relation": "planner balance with",
+    "knob2": "parallel_tuple_cost",
+    "context": "Planner’s decision for parallel query depends jointly on parallel_setup_cost and parallel_tuple_cost."
+}
+{
+    "knob1": "temp_buffers",
+    "relation": "per session limit",
+    "knob2": "max_connections",
+    "context": "temp_buffers is allocated per session; the maximum total consumption depends on max_connections."
+}
+
+// summarized context
+{
+    "knob1": "archive_command",
+    "relation": "requires enabled",
+    "knob2": "archive_mode",
+    "context": "archive_command must be set (non-empty) to enable WAL archiving; archive_mode must be on." // It is ignored unless archive_mode was enabled at server start. If archive_command is an empty string (the default) while archive_mode is enabled, WAL archiving is temporarily disabled, but the server continues to accumulate WAL segment files in the expectation that a command will soon be provided.
+}
+{
+    "knob1": "archive_timeout",
+    "relation": "works with",
+    "knob2": "archive_command",
+    "context": "archive_timeout forces a switch of WAL segment files, so archive_command can copy them even if not full."
+}
+{
+    "knob1": "wal_keep_size",
+    "relation": "alternative to",
+    "knob2": "wal_keep_segments",
+    "context": "wal_keep_size specifies the minimum size of past WAL files kept for standby servers; it replaces wal_keep_segments."
+}
+{
+    "knob1": "random_page_cost",
+    "relation": "interacts with",
+    "knob2": "seq_page_cost",
+    "context": "Planner compares random_page_cost against seq_page_cost to decide between index scans and sequential scans."
+}
+{
+    "knob1": "effective_cache_size",
+    "relation": "advisory upper bound",
+    "knob2": "shared_buffers",
+    "context": "effective_cache_size should be set to a value larger than shared_buffers, since it represents OS cache plus shared buffers."
+}
+{
+    "knob1": "geqo_threshold",
+    "relation": "upper bound controlled by",
+    "knob2": "from_collapse_limit / join_collapse_limit",
+    "context": "If from_collapse_limit or join_collapse_limit is greater than or equal to geqo_threshold, GEQO is triggered."
+}
+{
+    "knob1": "autovacuum",
+    "relation": "requires",
+    "knob2": "track_counts",
+    "context": "Autovacuum cannot work correctly unless track_counts is enabled, because it relies on statistics."
+}
+{
+    "knob1": "autovacuum_max_workers",
+    "relation": "upper bound for",
+    "knob2": "autovacuum_naptime",
+    "context": "With multiple workers, autovacuum_naptime is effectively a minimum delay, since the next worker may be started earlier than that."
+}
+{
+    "knob1": "autovacuum_vacuum_cost_delay",
+    "relation": "defaults to",
+    "knob2": "vacuum_cost_delay",
+    "context": "If set to -1, autovacuum_vacuum_cost_delay defaults to the value of vacuum_cost_delay."
+}
+{
+    "knob1": "autovacuum_vacuum_cost_limit",
+    "relation": "defaults to",
+    "knob2": "vacuum_cost_limit",
+    "context": "If set to -1, autovacuum_vacuum_cost_limit defaults to the value of vacuum_cost_limit."
+}
+
+
+// Incorrect relation extraction
+{
+    "knob1": "max_parallel_workers",
+    "relation": "greater than or equal to",  // Correct: smaller than or equal to
+    "knob2": "max_worker_processes",
+    "context": "Also, note that a setting for this value which is higher than max_worker_processes will have no effect, since parallel workers are taken from the pool of worker processes established by that setting."
+}
+

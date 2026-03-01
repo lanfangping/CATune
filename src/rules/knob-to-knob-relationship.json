@@ -1,0 +1,368 @@
+[
+  {
+    "knob": "superuser_reserved_connections",
+    "property": "less than",
+    "value": "max_connections",
+    "context": "..."
+  },
+  {
+    "knob": "max_connections",
+    "property": "larger than or equal to",
+    "value": "master.max_connections"
+  },
+  {
+    "knob": "shared_buffers",
+    "property": "larger settings usually require",
+    "value": "max_wal_size"
+  },
+  {
+    "knob": "max_prepared_transactions",
+    "property": "larger than or equal to",
+    "value": "max_connections"
+  },
+  {
+    "knob": "autovacuum_work_mem",
+    "property": "inherits default from",
+    "value": "maintenance_work_mem"
+  },
+  {
+    "knob": "hash_mem_multiplier",
+    "property": "multiplies",
+    "value": "work_mem"
+  },
+  {
+    "knob": "bgwriter_lru_multiplier",
+    "property": "multiplies recent buffer need with",
+    "value": "bgwriter_lru_maxpages"
+  },
+  {
+    "knob": "max_worker_processes",
+    "property": "larger than or equal to",
+    "value": "master.max_worker_processes"
+  },
+  {
+    "knob": "max_parallel_workers_per_gather",
+    "property": "less than or equal to",
+    "value": "max_parallel_workers"
+  },
+  {
+    "knob": "max_parallel_maintenance_workers",
+    "property": "less than or equal to",
+    "value": "max_parallel_workers"
+  },
+  {
+    "knob": "max_parallel_workers",
+    "property": "less than or equal to",
+    "value": "max_worker_processes"
+  },
+  {
+    "knob": "max_wal_senders",
+    "property": "larger than or equal to",
+    "value": "master.max_wal_senders"
+  },
+  {
+    "knob": "max_replication_slots",
+    "property": "requires",
+    "value": "wal_level=replica_or_higher"
+  },
+  {
+    "knob": "wal_keep_size",
+    "property": "affected by",
+    "value": "checkpoint_segments_and_wal_archiving"
+  },
+  {
+    "knob": "max_slot_wal_keep_size",
+    "property": "limits",
+    "value": "replication_slot_wal_retention"
+  },
+  {
+    "knob": "vacuum_defer_cleanup_age",
+    "property": "alternative to",
+    "value": "hot_standby_feedback"
+  },
+  {
+    "knob": "hot_standby_feedback",
+    "property": "affected by",
+    "value": "old_snapshot_threshold"
+  },
+  {
+    "knob": "max_logical_replication_workers",
+    "property": "taken from pool defined by",
+    "value": "max_worker_processes"
+  },
+  {
+    "knob": "max_sync_workers_per_subscription",
+    "property": "taken from pool defined by",
+    "value": "max_logical_replication_workers"
+  },
+  {
+    "knob": "enable_indexonlyscan",
+    "property": "requires",
+    "value": "enable_indexscan"
+  },
+  {
+    "knob": "random_page_cost",
+    "property": "should not be less than",
+    "value": "seq_page_cost"
+  },
+  {
+    "knob": "jit_inline_above_cost",
+    "property": "larger than or equal to",
+    "value": "jit_above_cost"
+  },
+  {
+    "knob": "jit_optimize_above_cost",
+    "property": "larger than or equal to",
+    "value": "jit_above_cost"
+  },
+  {
+    "knob": "jit_optimize_above_cost",
+    "property": "less than or equal to",
+    "value": "jit_inline_above_cost"
+  },
+  {
+    "knob": "geqo_pool_size",
+    "property": "default derived from",
+    "value": "geqo_effort"
+  },
+  {
+    "knob": "geqo_generations",
+    "property": "default derived from",
+    "value": "geqo_pool_size"
+  },
+  {
+    "knob": "from_collapse_limit",
+    "property": "greater than or equal to triggers",
+    "value": "geqo_threshold"
+  },
+  {
+    "knob": "join_collapse_limit",
+    "property": "default equal to",
+    "value": "from_collapse_limit"
+  },
+  {
+    "knob": "join_collapse_limit",
+    "property": "greater than or equal to triggers",
+    "value": "geqo_threshold"
+  },
+  {
+    "knob": "constraint_exclusion",
+    "property": "alternative to",
+    "value": "enable_partition_pruning"
+  },
+  {
+    "knob": "log_destination",
+    "property": "requires",
+    "value": "logging_collector"
+  },
+  {
+    "knob": "log_filename",
+    "property": "requires",
+    "value": "logging_collector"
+  },
+  {
+    "knob": "log_directory",
+    "property": "requires",
+    "value": "logging_collector"
+  },
+  {
+    "knob": "log_file_mode",
+    "property": "requires",
+    "value": "logging_collector"
+  },
+  {
+    "knob": "log_rotation_age",
+    "property": "requires",
+    "value": "logging_collector"
+  },
+  {
+    "knob": "log_rotation_size",
+    "property": "requires",
+    "value": "logging_collector"
+  },
+  {
+    "knob": "log_truncate_on_rotation",
+    "property": "requires",
+    "value": "logging_collector"
+  },
+  {
+    "knob": "log_min_duration_statement",
+    "property": "overrides",
+    "value": "log_min_duration_sample"
+  },
+  {
+    "knob": "log_min_duration_sample",
+    "property": "sampling controlled by",
+    "value": "log_statement_sample_rate"
+  },
+  {
+    "knob": "log_statement",
+    "property": "complements",
+    "value": "log_min_error_statement"
+  },
+  {
+    "knob": "debug_pretty_print",
+    "property": "applies to outputs of",
+    "value": "debug_print_parse/debug_print_rewritten/debug_print_plan"
+  },
+  {
+    "knob": "log_duration",
+    "property": "different from",
+    "value": "log_min_duration_statement"
+  },
+  {
+    "knob": "log_replication_commands",
+    "property": "related to",
+    "value": "replication_settings"
+  },
+  {
+    "knob": "log_timezone",
+    "property": "different from",
+    "value": "TimeZone"
+  },
+  {
+    "knob": "log_filename",
+    "property": "should be consistent with",
+    "value": "log_rotation_age"
+  },
+  {
+    "knob": "log_rotation_size",
+    "property": "should be set to",
+    "value": "0 (to avoid unpredictable file names for CSV import)"
+  },
+  {
+    "knob": "log_truncate_on_rotation",
+    "property": "should be set to",
+    "value": "on (to avoid mixing old and new CSV log data)"
+  },
+  {
+    "knob": "cluster_name",
+    "property": "default application name for",
+    "value": "synchronous_standby_names"
+  },
+  {
+    "knob": "autovacuum",
+    "property": "requires",
+    "value": "track_counts"
+  },
+  {
+    "knob": "autovacuum_vacuum_cost_delay",
+    "property": "falls back to",
+    "value": "vacuum_cost_delay"
+  },
+  {
+    "knob": "autovacuum_vacuum_cost_limit",
+    "property": "falls back to",
+    "value": "vacuum_cost_limit"
+  },
+  {
+    "knob": "vacuum_freeze_table_age",
+    "property": "limited to 95% of",
+    "value": "autovacuum_freeze_max_age"
+  },
+  {
+    "knob": "vacuum_freeze_min_age",
+    "property": "limited to half of",
+    "value": "autovacuum_freeze_max_age"
+  },
+  {
+    "knob": "vacuum_multixact_freeze_table_age",
+    "property": "limited to 95% of",
+    "value": "autovacuum_multixact_freeze_max_age"
+  },
+  {
+    "knob": "vacuum_multixact_freeze_min_age",
+    "property": "limited to half of",
+    "value": "autovacuum_multixact_freeze_max_age"
+  },
+  {
+    "knob": "transaction_isolation",
+    "property": "default set by",
+    "value": "default_transaction_isolation"
+  },
+  {
+    "knob": "transaction_read_only",
+    "property": "default set by",
+    "value": "default_transaction_read_only"
+  },
+  {
+    "knob": "transaction_deferrable",
+    "property": "default set by",
+    "value": "default_transaction_deferrable"
+  },
+  {
+    "knob": "lock_timeout",
+    "property": "pointless if set >= ",
+    "value": "statement_timeout"
+  },
+  {
+    "knob": "temp_tablespaces",
+    "property": "falls back to",
+    "value": "default_tablespace"
+  },
+  {
+    "knob": "log_statement_stats",
+    "property": "mutually exclusive with",
+    "value": "log_parser_stats/log_planner_stats/log_executor_stats"
+  },
+  {
+    "knob": "session_preload_libraries",
+    "property": "alternative to",
+    "value": "shared_preload_libraries"
+  },
+  {
+    "knob": "jit_provider",
+    "property": "used by",
+    "value": "jit"
+  },
+  {
+    "knob": "deadlock_timeout",
+    "property": "also controls wait logging when",
+    "value": "log_lock_waits"
+  },
+  {
+    "knob": "max_locks_per_transaction",
+    "property": "scales with",
+    "value": "max_connections"
+  },
+  {
+    "knob": "max_locks_per_transaction",
+    "property": "scales with",
+    "value": "max_prepared_transactions"
+  },
+  {
+    "knob": "max_pred_locks_per_transaction",
+    "property": "scales with",
+    "value": "max_connections"
+  },
+  {
+    "knob": "max_pred_locks_per_transaction",
+    "property": "scales with",
+    "value": "max_prepared_transactions"
+  },
+  {
+    "knob": "max_pred_locks_per_relation",
+    "property": "depends on",
+    "value": "max_pred_locks_per_transaction"
+  },
+  {
+    "knob": "vacuum_freeze_table_age",
+    "property": "limited to 95% of",
+    "value": "autovacuum_freeze_max_age"
+  },
+  {
+    "knob": "vacuum_freeze_min_age",
+    "property": "limited to half of",
+    "value": "autovacuum_freeze_max_age"
+  },
+  {
+    "knob": "vacuum_multixact_freeze_table_age",
+    "property": "limited to 95% of",
+    "value": "autovacuum_multixact_freeze_max_age"
+  },
+  {
+    "knob": "vacuum_multixact_freeze_min_age",
+    "property": "limited to half of",
+    "value": "autovacuum_multixact_freeze_max_age"
+  }
+]

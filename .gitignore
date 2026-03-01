@@ -1,0 +1,9 @@
+__pycache__
+docker/postgres-13-data
+benchbase
+temp_results
+.env
+src/dbms/queries/tpcc/benchbase.log
+src/dbms/queries/tpcc/tpcc_test.log
+wandb
+visualize/plots_results
