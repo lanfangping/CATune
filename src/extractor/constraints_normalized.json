@@ -1,0 +1,642 @@
+[
+  {
+    "knob1": "standby.max_connections",
+    "relation": "same or higher",
+    "knob2": "max_connections",
+    "condition": null,
+    "context": "Setting max_connections on a standby server relative to the master.",
+    "evidence_span": "When running a standby server, you must set this parameter to the same or higher value than on the master server."
+  },
+  {
+    "knob1": "superuser_reserved_connections",
+    "relation": "less than",
+    "knob2": "max_connections",
+    "condition": "",
+    "context": "The value of superuser_reserved_connections must be less than max_connections.",
+    "evidence_span": "The value must be less than max_connections."
+  },
+  {
+    "knob1": "max_prepared_transactions",
+    "relation": "greater than or equal to",
+    "knob2": "max_connections",
+    "condition": "if using prepared transactions",
+    "context": "max_prepared_transactions should be at least as large as max_connections for every session to have a prepared transaction pending.",
+    "evidence_span": "If you are using prepared transactions, you will probably want max_prepared_transactions to be at least as large as max_connections , so that every session can have a prepared transaction pending."
+  },
+  {
+    "knob1": "max_prepared_transactions",
+    "relation": "same or higher",
+    "knob2": "standby.max_prepared_transactions",
+    "condition": "when running a standby server",
+    "context": "On a standby server, max_prepared_transactions must be set to the same or higher value than on the master server.",
+    "evidence_span": "When running a standby server, you must set this parameter to the same or higher value than on the master server."
+  },
+  {
+    "knob1": "standby.max_prepared_transactions",
+    "relation": "same or higher",
+    "knob2": "max_prepared_transactions",
+    "condition": "when running a standby server",
+    "context": "standby server must set max_prepared_transactions to same or higher value than on master",
+    "evidence_span": "you must set this parameter to the same or higher value than on the master server"
+  },
+  {
+    "knob1": "hash_mem_multiplier",
+    "relation": "multiplied by",
+    "knob2": "work_mem",
+    "condition": "",
+    "context": "hash_mem_multiplier multiplies work_mem to compute memory limit for hash operations.",
+    "evidence_span": "The final limit is determined by multiplying work_mem by hash_mem_multiplier."
+  },
+  {
+    "knob1": "maintenance_work_mem",
+    "relation": "greater than or equal to",
+    "knob2": "work_mem",
+    "condition": null,
+    "context": "It's safe to set maintenance_work_mem larger than work_mem.",
+    "evidence_span": "it's safe to set this value significantly larger than work_mem"
+  },
+  {
+    "knob1": "autovacuum_work_mem",
+    "relation": "interacts with",
+    "knob2": "maintenance_work_mem",
+    "condition": "when autovacuum runs",
+    "context": "Autovacuum may allocate up to autovacuum_max_workers times maintenance_work_mem, so autovacuum_work_mem can be set separately to control this.",
+    "evidence_span": "It may be useful to control for this by separately setting autovacuum_work_mem"
+  },
+  {
+    "knob1": "autovacuum_work_mem",
+    "relation": "defaults to",
+    "knob2": "maintenance_work_mem",
+    "condition": "when set to -1",
+    "context": "Default behavior when autovacuum_work_mem is -1",
+    "evidence_span": "It defaults to -1, indicating that the value of maintenance_work_mem should be used instead."
+  },
+  {
+    "knob1": "standby.max_worker_processes",
+    "relation": "same or higher",
+    "knob2": "max_worker_processes",
+    "condition": "when running a standby server",
+    "context": "Standby must have same or higher value than master.",
+    "evidence_span": "When running a standby server, you must set this parameter to the same or higher value than on the master server."
+  },
+  {
+    "knob1": "max_worker_processes",
+    "relation": "consider adjusting",
+    "knob2": "max_parallel_workers",
+    "condition": "when changing this value",
+    "context": "Adjust max_parallel_workers when changing max_worker_processes.",
+    "evidence_span": "When changing this value, consider also adjusting max_parallel_workers"
+  },
+  {
+    "knob1": "max_worker_processes",
+    "relation": "consider adjusting",
+    "knob2": "max_parallel_maintenance_workers",
+    "condition": "when changing this value",
+    "context": "Adjust max_parallel_maintenance_workers when changing max_worker_processes.",
+    "evidence_span": "When changing this value, consider also adjusting max_parallel_maintenance_workers"
+  },
+  {
+    "knob1": "max_worker_processes",
+    "relation": "consider adjusting",
+    "knob2": "max_parallel_workers_per_gather",
+    "condition": "when changing this value",
+    "context": "Adjust max_parallel_workers_per_gather when changing max_worker_processes.",
+    "evidence_span": "When changing this value, consider also adjusting max_parallel_workers_per_gather"
+  },
+  {
+    "knob1": "standby.max_worker_processes",
+    "relation": "same or higher",
+    "knob2": "max_worker_processes",
+    "condition": null,
+    "context": "Standby server must have same or higher value than master.",
+    "evidence_span": "When running a standby server, you must set this parameter to the same or higher value than on the master server."
+  },
+  {
+    "knob1": "max_worker_processes",
+    "relation": "consider adjusting",
+    "knob2": "max_parallel_workers",
+    "condition": null,
+    "context": "Adjust related parallel worker knobs when changing max_worker_processes.",
+    "evidence_span": "When changing this value, consider also adjusting max_parallel_workers , max_parallel_maintenance_workers , and max_parallel_workers_per_gather ."
+  },
+  {
+    "knob1": "max_worker_processes",
+    "relation": "consider adjusting",
+    "knob2": "max_parallel_maintenance_workers",
+    "condition": null,
+    "context": "Adjust related parallel worker knobs when changing max_worker_processes.",
+    "evidence_span": "When changing this value, consider also adjusting max_parallel_workers , max_parallel_maintenance_workers , and max_parallel_workers_per_gather ."
+  },
+  {
+    "knob1": "max_worker_processes",
+    "relation": "consider adjusting",
+    "knob2": "max_parallel_workers_per_gather",
+    "condition": null,
+    "context": "Adjust related parallel worker knobs when changing max_worker_processes.",
+    "evidence_span": "When changing this value, consider also adjusting max_parallel_workers , max_parallel_maintenance_workers , and max_parallel_workers_per_gather ."
+  },
+  {
+    "knob1": "max_parallel_workers_per_gather",
+    "relation": "bounded by",
+    "knob2": "max_parallel_workers",
+    "condition": "",
+    "context": "Parallel workers are limited by max_parallel_workers.",
+    "evidence_span": "Parallel workers are taken from the pool of processes established by max_worker_processes , limited by max_parallel_workers ."
+  },
+  {
+    "knob1": "max_parallel_workers_per_gather",
+    "relation": "interacts with",
+    "knob2": "work_mem",
+    "condition": "",
+    "context": "Resource limits like work_mem apply per worker, affecting total resource utilization.",
+    "evidence_span": "This should be taken into account when choosing a value for this setting, as well as when configuring other settings that control resource utilization, such as work_mem ."
+  },
+  {
+    "knob1": "max_parallel_maintenance_workers",
+    "relation": "subset of",
+    "knob2": "max_parallel_workers",
+    "condition": "",
+    "context": "Parallel workers are limited by max_parallel_workers.",
+    "evidence_span": "Parallel workers are taken from the pool of processes established by max_worker_processes , limited by max_parallel_workers ."
+  },
+  {
+    "knob1": "max_parallel_maintenance_workers",
+    "relation": "requires enabled",
+    "knob2": "max_worker_processes",
+    "condition": "",
+    "context": "Parallel workers are taken from the pool of processes established by max_worker_processes.",
+    "evidence_span": "Parallel workers are taken from the pool of processes established by max_worker_processes , limited by max_parallel_workers ."
+  },
+  {
+    "knob1": "max_parallel_maintenance_workers",
+    "relation": "interacts with",
+    "knob2": "maintenance_work_mem",
+    "condition": "",
+    "context": "Parallel utility commands treat maintenance_work_mem as a limit for the entire command.",
+    "evidence_span": "Parallel utility commands treat the resource limit maintenance_work_mem as a limit to be applied to the entire utility command, regardless of the number of parallel worker processes."
+  },
+  {
+    "knob1": "max_parallel_workers",
+    "relation": "consider adjusting",
+    "knob2": "max_parallel_maintenance_workers",
+    "condition": "",
+    "context": "Adjust related knobs when changing max_parallel_workers",
+    "evidence_span": "When increasing or decreasing this value, consider also adjusting max_parallel_maintenance_workers and max_parallel_workers_per_gather ."
+  },
+  {
+    "knob1": "max_parallel_workers",
+    "relation": "consider adjusting",
+    "knob2": "max_parallel_workers_per_gather",
+    "condition": "",
+    "context": "Adjust related knobs when changing max_parallel_workers",
+    "evidence_span": "When increasing or decreasing this value, consider also adjusting max_parallel_maintenance_workers and max_parallel_workers_per_gather ."
+  },
+  {
+    "knob1": "max_parallel_workers",
+    "relation": "less than or equal to half",
+    "knob2": "max_worker_processes",
+    "condition": "",
+    "context": "max_parallel_workers limited by max_worker_processes",
+    "evidence_span": "a setting for this value which is higher than max_worker_processes will have no effect, since parallel workers are taken from the pool of worker processes established by that setting."
+  },
+  {
+    "knob1": "archive_mode",
+    "relation": "requires",
+    "knob2": "wal_level",
+    "condition": "replica or higher",
+    "context": "WAL archiving and streaming replication require wal_level set to replica or higher.",
+    "evidence_span": "replica or higher must be used to enable WAL archiving ( archive_mode ) and streaming replication."
+  },
+  {
+    "knob1": "fsync",
+    "relation": "requires enabled",
+    "knob2": "full_page_writes",
+    "condition": "off",
+    "context": "Turning off fsync suggests turning off full_page_writes.",
+    "evidence_span": "If you turn this parameter off, also consider turning off full_page_writes ."
+  },
+  {
+    "knob1": "synchronous_commit",
+    "relation": "requires enabled",
+    "knob2": "synchronous_standby_names",
+    "condition": "non-empty",
+    "context": "synchronous_commit controls waiting for standby WAL processing when synchronous_standby_names is set",
+    "evidence_span": "If synchronous_standby_names is non-empty, synchronous_commit also controls whether transaction commits will wait for their WAL records to be processed on the standby server(s)."
+  },
+  {
+    "knob1": "synchronous_commit",
+    "relation": "bounded by",
+    "knob2": "wal_writer_delay",
+    "condition": "off mode",
+    "context": "Maximum delay in off mode is three times wal_writer_delay",
+    "evidence_span": "The maximum delay is three times wal_writer_delay."
+  },
+  {
+    "knob1": "synchronous_commit",
+    "relation": "requires",
+    "knob2": "fsync",
+    "condition": "when synchronous_commit is not off",
+    "context": "Non-off modes require fsync for local WAL flush.",
+    "evidence_span": "The local behavior of all non- off modes is to wait for local flush of WAL to disk."
+  },
+  {
+    "knob1": "synchronous_commit",
+    "relation": "bounded by",
+    "knob2": "wal_writer_delay",
+    "condition": "in off mode",
+    "context": "Maximum delay in off mode is three times wal_writer_delay.",
+    "evidence_span": "The maximum delay is three times wal_writer_delay ."
+  },
+  {
+    "knob1": "synchronous_commit",
+    "relation": "requires enabled",
+    "knob2": "synchronous_standby_names",
+    "condition": "when synchronous replication is in use",
+    "context": "synchronous_commit settings require synchronous_standby_names to be enabled for replication effects",
+    "evidence_span": "This is usually not desirable when synchronous replication is in use"
+  },
+  {
+    "knob1": "wal_buffers",
+    "relation": "defaults proportional to",
+    "knob2": "shared_buffers",
+    "condition": "default setting of -1",
+    "context": "Default size is 1/32nd of shared_buffers.",
+    "evidence_span": "The default setting of -1 selects a size equal to 1/32nd (about 3%) of shared_buffers"
+  },
+  {
+    "knob1": "wal_buffers",
+    "relation": "greater than or equal to",
+    "knob2": "shared_buffers",
+    "condition": "default setting of -1",
+    "context": "Default size not less than 64kB nor more than one WAL segment.",
+    "evidence_span": "but not less than 64kB nor more than the size of one WAL segment, typically 16MB"
+  },
+  {
+    "knob1": "commit_delay",
+    "relation": "requires",
+    "knob2": "commit_siblings",
+    "condition": "at least commit_siblings other transactions are active",
+    "context": "Delay only performed if a minimum number of sibling transactions are active.",
+    "evidence_span": "a delay is only performed if at least commit_siblings other transactions are active when a flush is about to be initiated."
+  },
+  {
+    "knob1": "commit_delay",
+    "relation": "requires enabled",
+    "knob2": "fsync",
+    "condition": "fsync must be enabled",
+    "context": "No delays are performed if fsync is disabled.",
+    "evidence_span": "no delays are performed if fsync is disabled."
+  },
+  {
+    "knob1": "checkpoint_warning",
+    "relation": "requires larger",
+    "knob2": "checkpoint_timeout",
+    "condition": "",
+    "context": "Checkpoint warning requires checkpoint_timeout to be at least as large as checkpoint_warning to generate warnings.",
+    "evidence_span": "No warnings will be generated if checkpoint_timeout is less than checkpoint_warning."
+  },
+  {
+    "knob1": "archive_mode",
+    "relation": "requires enabled",
+    "knob2": "wal_level",
+    "condition": "not minimal",
+    "context": "archive_mode cannot be enabled when wal_level is minimal",
+    "evidence_span": "archive_mode cannot be enabled when wal_level is set to minimal ."
+  },
+  {
+    "knob1": "archive_command",
+    "relation": "requires enabled",
+    "knob2": "archive_mode",
+    "condition": "",
+    "context": "archive_command is ignored unless archive_mode is enabled at server start",
+    "evidence_span": "It is ignored unless archive_mode was enabled at server start."
+  },
+  {
+    "knob1": "archive_timeout",
+    "relation": "less than",
+    "knob2": "archive_command",
+    "condition": "",
+    "context": "archive_timeout forces WAL segment switches to limit unarchived data age",
+    "evidence_span": "To limit how old unarchived data can be, you can set archive_timeout to force the server to switch to a new WAL segment file periodically."
+  },
+  {
+    "knob1": "recovery_target_inclusive",
+    "relation": "requires enabled",
+    "knob2": "recovery_target_lsn",
+    "condition": "when recovery_target_lsn is specified",
+    "context": "recovery_target_inclusive applies when recovery_target_lsn is specified",
+    "evidence_span": "Applies when recovery_target_lsn , recovery_target_time , or recovery_target_xid is specified."
+  },
+  {
+    "knob1": "recovery_target_inclusive",
+    "relation": "requires enabled",
+    "knob2": "recovery_target_time",
+    "condition": "when recovery_target_time is specified",
+    "context": "recovery_target_inclusive applies when recovery_target_time is specified",
+    "evidence_span": "Applies when recovery_target_lsn , recovery_target_time , or recovery_target_xid is specified."
+  },
+  {
+    "knob1": "recovery_target_inclusive",
+    "relation": "requires enabled",
+    "knob2": "recovery_target_xid",
+    "condition": "when recovery_target_xid is specified",
+    "context": "recovery_target_inclusive applies when recovery_target_xid is specified",
+    "evidence_span": "Applies when recovery_target_lsn , recovery_target_time , or recovery_target_xid is specified."
+  },
+  {
+    "knob1": "max_wal_senders",
+    "relation": "requires enabled",
+    "knob2": "wal_level",
+    "condition": "replica or higher",
+    "context": "max_wal_senders requires wal_level to be replica or higher for standby connections.",
+    "evidence_span": "wal_level must be set to replica or higher to allow connections from standby servers."
+  },
+  {
+    "knob1": "standby.max_wal_senders",
+    "relation": "same or higher",
+    "knob2": "max_wal_senders",
+    "condition": null,
+    "context": "On a standby server, max_wal_senders must be same or higher than on the master.",
+    "evidence_span": "When running a standby server, you must set this parameter to the same or higher value than on the master server."
+  },
+  {
+    "knob1": "max_replication_slots",
+    "relation": "requires enabled",
+    "knob2": "wal_level",
+    "condition": "replica or higher",
+    "context": "max_replication_slots requires wal_level to be replica or higher for replication slots to be used.",
+    "evidence_span": "wal_level must be set to replica or higher to allow replication slots to be used."
+  },
+  {
+    "knob1": "vacuum_defer_cleanup_age",
+    "relation": "interacts with",
+    "knob2": "hot_standby_feedback",
+    "condition": "",
+    "context": "Alternative to using vacuum_defer_cleanup_age",
+    "evidence_span": "You should also consider setting hot_standby_feedback on standby server(s) as an alternative to using this parameter."
+  },
+  {
+    "knob1": "vacuum_defer_cleanup_age",
+    "relation": "interacts with",
+    "knob2": "old_snapshot_threshold",
+    "condition": "",
+    "context": "Does not prevent cleanup of dead rows which have reached the age specified by old_snapshot_threshold",
+    "evidence_span": "This does not prevent cleanup of dead rows which have reached the age specified by old_snapshot_threshold ."
+  },
+  {
+    "knob1": "enable_indexonlyscan",
+    "relation": "requires enabled",
+    "knob2": "enable_indexscan",
+    "condition": "",
+    "context": "enable_indexonlyscan requires enable_indexscan to be enabled for the planner to consider index-only-scans.",
+    "evidence_span": "The enable_indexscan setting must also be enabled to have the query planner consider index-only-scans."
+  },
+  {
+    "knob1": "random_page_cost",
+    "relation": "less than",
+    "knob2": "seq_page_cost",
+    "condition": "not physically sensible",
+    "context": "Setting random_page_cost less than seq_page_cost is not physically sensible.",
+    "evidence_span": "Although the system will let you set random_page_cost to less than seq_page_cost , it is not physically sensible to do so."
+  },
+  {
+    "knob1": "random_page_cost",
+    "relation": "same or higher",
+    "knob2": "seq_page_cost",
+    "condition": "if the database is entirely cached in RAM",
+    "context": "Setting random_page_cost equal to seq_page_cost makes sense if the database is entirely cached in RAM.",
+    "evidence_span": "However, setting them equal makes sense if the database is entirely cached in RAM, since in that case there is no penalty for touching pages out of sequence."
+  },
+  {
+    "knob1": "jit_inline_above_cost",
+    "relation": "greater than or equal to",
+    "knob2": "jit_above_cost",
+    "condition": "",
+    "context": "jit_inline_above_cost should not be set less than jit_above_cost",
+    "evidence_span": "It is not meaningful to set this to less than jit_above_cost ."
+  },
+  {
+    "knob1": "jit_optimize_above_cost",
+    "relation": "greater than or equal to",
+    "knob2": "jit_above_cost",
+    "condition": "",
+    "context": "jit_optimize_above_cost should not be set less than jit_above_cost",
+    "evidence_span": "It is not meaningful to set this to less than jit_above_cost"
+  },
+  {
+    "knob1": "jit_optimize_above_cost",
+    "relation": "less than or equal to half",
+    "knob2": "jit_inline_above_cost",
+    "condition": "unlikely to be beneficial",
+    "context": "jit_optimize_above_cost unlikely beneficial if set more than jit_inline_above_cost",
+    "evidence_span": "it is unlikely to be beneficial to set it to more than jit_inline_above_cost"
+  },
+  {
+    "knob1": "geqo_generations",
+    "relation": "defaults proportional to",
+    "knob2": "geqo_pool_size",
+    "condition": "If it is set to zero (the default setting)",
+    "context": "Default value for geqo_generations is chosen based on geqo_pool_size.",
+    "evidence_span": "If it is set to zero (the default setting) then a suitable value is chosen based on geqo_pool_size."
+  },
+  {
+    "knob1": "from_collapse_limit",
+    "relation": "less than",
+    "knob2": "geqo_threshold",
+    "condition": "Setting this value to geqo_threshold or more may trigger use of the GEQO planner",
+    "context": "Setting from_collapse_limit too high may trigger GEQO planner",
+    "evidence_span": "Setting this value to geqo_threshold or more may trigger use of the GEQO planner, resulting in non-optimal plans."
+  },
+  {
+    "knob1": "join_collapse_limit",
+    "relation": "defaults to",
+    "knob2": "from_collapse_limit",
+    "condition": "",
+    "context": "Default setting for join_collapse_limit",
+    "evidence_span": "By default, this variable is set the same as from_collapse_limit"
+  },
+  {
+    "knob1": "join_collapse_limit",
+    "relation": "requires enabled",
+    "knob2": "geqo",
+    "condition": "when join_collapse_limit is set to geqo_threshold or more",
+    "context": "Triggering GEQO planner",
+    "evidence_span": "Setting this value to geqo_threshold or more may trigger use of the GEQO planner"
+  },
+  {
+    "knob1": "join_collapse_limit",
+    "relation": "requires enabled",
+    "knob2": "geqo",
+    "condition": "when set to geqo_threshold or more",
+    "context": "Setting join_collapse_limit may trigger GEQO planner",
+    "evidence_span": "Setting this value to geqo_threshold or more may trigger use of the GEQO planner"
+  },
+  {
+    "knob1": "log_file_mode",
+    "relation": "requires enabled",
+    "knob2": "logging_collector",
+    "condition": "when logging_collector is enabled",
+    "context": "Sets permissions for log files when logging_collector is enabled.",
+    "evidence_span": "On Unix systems this parameter sets the permissions for log files when logging_collector is enabled."
+  },
+  {
+    "knob1": "log_file_mode",
+    "relation": "interacts with",
+    "knob2": "log_directory",
+    "condition": "to make use of such a setting",
+    "context": "Altering log_directory is needed for certain log_file_mode settings.",
+    "evidence_span": "Note however that to make use of such a setting, you'll need to alter log_directory to store the files somewhere outside the cluster data directory."
+  },
+  {
+    "knob1": "log_file_mode",
+    "relation": "requires enabled",
+    "knob2": "logging_collector",
+    "condition": "On Unix systems",
+    "context": "log_file_mode sets permissions when logging_collector is enabled",
+    "evidence_span": "On Unix systems this parameter sets the permissions for log files when logging_collector is enabled."
+  },
+  {
+    "knob1": "log_file_mode",
+    "relation": "interacts with",
+    "knob2": "log_directory",
+    "condition": "when using permissions like 0640",
+    "context": "to use group-readable permissions, log_directory must be outside cluster data directory",
+    "evidence_span": "Note however that to make use of such a setting, you'll need to alter log_directory to store the files somewhere outside the cluster data directory."
+  },
+  {
+    "knob1": "log_truncate_on_rotation",
+    "relation": "works with",
+    "knob2": "log_filename",
+    "condition": "",
+    "context": "log_truncate_on_rotation works with log_filename for automatic log overwriting",
+    "evidence_span": "set log_filename to server_log.%a , log_truncate_on_rotation to on"
+  },
+  {
+    "knob1": "log_truncate_on_rotation",
+    "relation": "works with",
+    "knob2": "log_rotation_age",
+    "condition": "",
+    "context": "log_truncate_on_rotation works with log_rotation_age for time-based log rotation and overwriting",
+    "evidence_span": "log_truncate_on_rotation to on , and log_rotation_age to 1440"
+  },
+  {
+    "knob1": "log_truncate_on_rotation",
+    "relation": "works with",
+    "knob2": "log_rotation_size",
+    "condition": "",
+    "context": "log_truncate_on_rotation works with log_rotation_size for size-driven log rotation and overwriting",
+    "evidence_span": "log_truncate_on_rotation to on , log_rotation_age to 60 , and log_rotation_size to 1000000"
+  },
+  {
+    "knob1": "log_min_duration_sample",
+    "relation": "subset of",
+    "knob2": "log_min_duration_statement",
+    "condition": "when log_min_duration_statement is set",
+    "context": "log_min_duration_sample has lower priority than log_min_duration_statement",
+    "evidence_span": "This setting has lower priority than log_min_duration_statement , meaning that statements with durations exceeding log_min_duration_statement are not subject to sampling and are always logged."
+  },
+  {
+    "knob1": "log_min_duration_sample",
+    "relation": "used in calculation",
+    "knob2": "log_statement_sample_rate",
+    "condition": "when sampling is enabled",
+    "context": "sample rate controlled by log_statement_sample_rate",
+    "evidence_span": "only for a subset of the executed statements, with sample rate controlled by log_statement_sample_rate"
+  },
+  {
+    "knob1": "log_duration",
+    "relation": "interacts with",
+    "knob2": "log_min_duration_statement",
+    "condition": "log_duration is on and log_min_duration_statement has a positive value",
+    "context": "Interaction between logging duration and query text based on threshold",
+    "evidence_span": "if log_duration is on and log_min_duration_statement has a positive value, all durations are logged but the query text is included only for statements exceeding the threshold"
+  },
+  {
+    "knob1": "autovacuum",
+    "relation": "requires enabled",
+    "knob2": "track_counts",
+    "condition": "",
+    "context": "autovacuum requires track_counts to be enabled to work.",
+    "evidence_span": "track_counts must also be enabled for autovacuum to work."
+  },
+  {
+    "knob1": "lock_timeout",
+    "relation": "less than",
+    "knob2": "statement_timeout",
+    "condition": "if statement_timeout is nonzero",
+    "context": "lock_timeout should be less than statement_timeout to avoid being overridden",
+    "evidence_span": "if statement_timeout is nonzero, it is rather pointless to set lock_timeout to the same or larger value, since the statement timeout would always trigger first."
+  },
+  {
+    "knob1": "lock_timeout",
+    "relation": "requires enabled",
+    "knob2": "log_min_error_statement",
+    "condition": "set to ERROR or lower",
+    "context": "log_min_error_statement must be set appropriately to log lock_timeout statements",
+    "evidence_span": "If log_min_error_statement is set to ERROR or lower, the statement that timed out will be logged."
+  },
+  {
+    "knob1": "vacuum_multixact_freeze_table_age",
+    "relation": "less than or equal to half",
+    "knob2": "autovacuum_multixact_freeze_max_age",
+    "condition": "",
+    "context": "VACUUM limits effective value to 95% of autovacuum_multixact_freeze_max_age.",
+    "evidence_span": "VACUUM will silently limit the effective value to 95% of autovacuum_multixact_freeze_max_age"
+  },
+  {
+    "knob1": "vacuum_multixact_freeze_min_age",
+    "relation": "less than or equal to half",
+    "knob2": "autovacuum_multixact_freeze_max_age",
+    "condition": "",
+    "context": "VACUUM limits effective value to half of autovacuum_multixact_freeze_max_age to avoid short forced autovacuum intervals.",
+    "evidence_span": "VACUUM will silently limit the effective value to half the value of autovacuum_multixact_freeze_max_age"
+  },
+  {
+    "knob1": "max_locks_per_transaction",
+    "relation": "multiplied by",
+    "knob2": "max_connections",
+    "condition": "",
+    "context": "Lock table size calculation",
+    "evidence_span": "max_locks_per_transaction * ( max_connections + max_prepared_transactions )"
+  },
+  {
+    "knob1": "max_locks_per_transaction",
+    "relation": "multiplied by",
+    "knob2": "max_prepared_transactions",
+    "condition": "",
+    "context": "Lock table size calculation",
+    "evidence_span": "max_locks_per_transaction * ( max_connections + max_prepared_transactions )"
+  },
+  {
+    "knob1": "standby.max_locks_per_transaction",
+    "relation": "same or higher",
+    "knob2": "max_locks_per_transaction",
+    "condition": "",
+    "context": "Standby server requirement",
+    "evidence_span": "When running a standby server, you must set this parameter to the same or higher value than on the master server."
+  },
+  {
+    "knob1": "segment_size",
+    "relation": "multiplied by",
+    "knob2": "block_size",
+    "condition": "",
+    "context": "Maximum segment file size calculation",
+    "evidence_span": "The maximum size of a segment file in bytes is equal to segment_size multiplied by block_size"
+  },
+  {
+    "knob1": "trace_notify",
+    "relation": "requires",
+    "knob2": "client_min_messages",
+    "condition": "DEBUG1 or lower",
+    "context": "trace_notify output to client requires client_min_messages at DEBUG1 or lower",
+    "evidence_span": "client_min_messages or log_min_messages must be DEBUG1 or lower to send this output to the client or server logs, respectively."
+  },
+  {
+    "knob1": "trace_notify",
+    "relation": "requires",
+    "knob2": "log_min_messages",
+    "condition": "DEBUG1 or lower",
+    "context": "trace_notify output to server logs requires log_min_messages at DEBUG1 or lower",
+    "evidence_span": "client_min_messages or log_min_messages must be DEBUG1 or lower to send this output to the client or server logs, respectively."
+  }
+]

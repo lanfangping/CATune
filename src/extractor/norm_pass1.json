@@ -1,0 +1,338 @@
+[
+  {
+    "knob1": "max_connections",
+    "relation": "same or higher",
+    "knob2": "standby.max_connections",
+    "condition": null,
+    "context": "Setting max_connections on a standby server relative to the master.",
+    "evidence_span": "When running a standby server, you must set this parameter to the same or higher value than on the master server."
+  },
+  {
+    "knob1": "superuser_reserved_connections",
+    "relation": "less than",
+    "knob2": "max_connections",
+    "condition": null,
+    "context": "The value of superuser_reserved_connections must be less than max_connections.",
+    "evidence_span": "The value must be less than max_connections ."
+  },
+  {
+    "knob1": "shared_buffers",
+    "relation": "requires larger",
+    "knob2": "max_wal_size",
+    "condition": null,
+    "context": "rule-based extraction",
+    "evidence_span": "Sets the amount of memory the database server uses for shared memory buffers. The default is typically 128 megabytes ( 128MB ), but might be less if your kernel settings will not support it (as determined during initdb ). This setting must be at least 128 kilobytes. However, settings significantly higher than the minimum are usually needed for good performance. If this value is specified without units, it is taken as blocks, that is BLCKSZ bytes, typically 8kB. (Non-default values of BLCKSZ change the minimum value.) This parameter can only be set at server start. If you have a dedicated database server with 1GB or more of RAM, a reasonable starting value for shared_buffers is 25% of the memory in your system. There are some workloads where even larger settings for shared_buffers are effective, but because PostgreSQL also relies on the operating system cache, it is unlikely that an allocation of more than 40% of RAM to shared_buffers will work better than a smaller amount. Larger settings for shared_buffers usually require a corresponding increase in max_wal_size , in order to spread out the process of writing large quantities of new or changed data over a longer period of time. On systems with less than 1GB of RAM, a smaller percentage of RAM is appropriate, so as to leave adequate space for the operating system."
+  },
+  {
+    "knob1": "max_prepared_transactions",
+    "relation": "greater than or equal to",
+    "knob2": "max_connections",
+    "condition": "max_prepared_transactions != 0",
+    "context": "max_prepared_transactions should be at least as large as max_connections for every session to have a prepared transaction pending.",
+    "evidence_span": "If you are using prepared transactions, you will probably want max_prepared_transactions to be at least as large as max_connections , so that every session can have a prepared transaction pending."
+  },
+  {
+    "knob1": "standby.max_prepared_transactions",
+    "relation": "greater than or equal to",
+    "knob2": "max_prepared_transactions",
+    "condition": null,
+    "context": "On standby, max_prepared_transactions must be same or higher than on master.",
+    "evidence_span": "When running a standby server, you must set this parameter to the same or higher value than on the master server."
+  },
+  {
+    "knob1": "max_prepared_transactions",
+    "relation": "same or higher",
+    "knob2": "standby.max_prepared_transactions",
+    "condition": null,
+    "context": "rule-based extraction",
+    "evidence_span": "Sets the maximum number of transactions that can be in the “ prepared ” state simultaneously (see PREPARE TRANSACTION ). Setting this parameter to zero (which is the default) disables the prepared-transaction feature. This parameter can only be set at server start. If you are not planning to use prepared transactions, this parameter should be set to zero to prevent accidental creation of prepared transactions. If you are using prepared transactions, you will probably want max_prepared_transactions to be at least as large as max_connections , so that every session can have a prepared transaction pending. When running a standby server, you must set this parameter to the same or higher value than on the master server. Otherwise, queries will not be allowed in the standby server."
+  },
+  {
+    "knob1": "work_mem",
+    "relation": "multiplied by",
+    "knob2": "hash_mem_multiplier",
+    "condition": null,
+    "context": "rule-based extraction",
+    "evidence_span": "Sets the base maximum amount of memory to be used by a query operation (such as a sort or hash table) before writing to temporary disk files. If this value is specified without units, it is taken as kilobytes. The default value is four megabytes ( 4MB ). Note that a complex query might perform several sort and hash operations at the same time, with each operation generally being allowed to use as much memory as this value specifies before it starts to write data into temporary files. Also, several running sessions could be doing such operations concurrently. Therefore, the total memory used could be many times the value of work_mem ; it is necessary to keep this fact in mind when choosing the value. Sort operations are used for ORDER BY , DISTINCT , and merge joins. Hash tables are used in hash joins, hash-based aggregation, and hash-based processing of IN subqueries. Hash-based operations are generally more sensitive to memory availability than equivalent sort-based operations. The memory limit for a hash table is computed by multiplying work_mem by hash_mem_multiplier . This makes it possible for hash-based operations to use an amount of memory that exceeds the usual work_mem base amount."
+  },
+  {
+    "knob1": "autovacuum_work_mem",
+    "relation": "fallback to",
+    "knob2": "maintenance_work_mem",
+    "condition": null,
+    "context": "Default behavior when autovacuum_work_mem is -1",
+    "evidence_span": "It defaults to -1, indicating that the value of maintenance_work_mem should be used instead."
+  },
+  {
+    "knob1": "max_worker_processes",
+    "relation": "same or higher",
+    "knob2": "standby.max_worker_processes",
+    "condition": null,
+    "context": "Standby server must have same or higher value than master.",
+    "evidence_span": "When running a standby server, you must set this parameter to the same or higher value than on the master server."
+  },
+  {
+    "knob1": "max_parallel_workers_per_gather",
+    "relation": "bounded by",
+    "knob2": "max_parallel_workers",
+    "condition": null,
+    "context": "Parallel workers are limited by max_parallel_workers.",
+    "evidence_span": "Parallel workers are taken from the pool of processes established by max_worker_processes , limited by max_parallel_workers ."
+  },
+  {
+    "knob1": "max_parallel_workers_per_gather",
+    "relation": "interacts with",
+    "knob2": "work_mem",
+    "condition": null,
+    "context": "Resource limits like work_mem apply per worker, affecting total resource utilization.",
+    "evidence_span": "This should be taken into account when choosing a value for this setting, as well as when configuring other settings that control resource utilization, such as work_mem ."
+  },
+  {
+    "knob1": "max_parallel_workers_per_gather",
+    "relation": "bounded by",
+    "knob2": "max_worker_processes",
+    "condition": null,
+    "context": "rule-based extraction",
+    "evidence_span": "Sets the maximum number of workers that can be started by a single Gather or Gather Merge node. Parallel workers are taken from the pool of processes established by max_worker_processes , limited by max_parallel_workers . Note that the requested number of workers may not actually be available at run time. If this occurs, the plan will run with fewer workers than expected, which may be inefficient. The default value is 2. Setting this value to 0 disables parallel query execution. Note that parallel queries may consume very substantially more resources than non-parallel queries, because each worker process is a completely separate process which has roughly the same impact on the system as an additional user session. This should be taken into account when choosing a value for this setting, as well as when configuring other settings that control resource utilization, such as work_mem . Resource limits such as work_mem are applied individually to each worker, which means the total utilization may be much higher across all processes than it would normally be for any single process. For example, a parallel query using 4 workers may use up to 5 times as much CPU time, memory, I/O bandwidth, and so forth as a query which uses no workers at all. For more information on parallel query, see Chapter 15 ."
+  },
+  {
+    "knob1": "max_parallel_maintenance_workers",
+    "relation": "bounded by",
+    "knob2": "max_parallel_workers",
+    "condition": null,
+    "context": "rule-based extraction",
+    "evidence_span": "Sets the maximum number of parallel workers that can be started by a single utility command. Currently, the parallel utility commands that support the use of parallel workers are CREATE INDEX only when building a B-tree index, and VACUUM without FULL option. Parallel workers are taken from the pool of processes established by max_worker_processes , limited by max_parallel_workers . Note that the requested number of workers may not actually be available at run time. If this occurs, the utility operation will run with fewer workers than expected. The default value is 2. Setting this value to 0 disables the use of parallel workers by utility commands. Note that parallel utility commands should not consume substantially more memory than equivalent non-parallel operations. This strategy differs from that of parallel query, where resource limits generally apply per worker process. Parallel utility commands treat the resource limit maintenance_work_mem as a limit to be applied to the entire utility command, regardless of the number of parallel worker processes. However, parallel utility commands may still consume substantially more CPU resources and I/O bandwidth."
+  },
+  {
+    "knob1": "max_parallel_workers",
+    "relation": "consider adjusting",
+    "knob2": "max_parallel_maintenance_workers",
+    "condition": null,
+    "context": "Adjust related knobs when changing max_parallel_workers",
+    "evidence_span": "When increasing or decreasing this value, consider also adjusting max_parallel_maintenance_workers and max_parallel_workers_per_gather ."
+  },
+  {
+    "knob1": "max_parallel_workers",
+    "relation": "consider adjusting",
+    "knob2": "max_parallel_workers_per_gather",
+    "condition": null,
+    "context": "Adjust related knobs when changing max_parallel_workers",
+    "evidence_span": "When increasing or decreasing this value, consider also adjusting max_parallel_maintenance_workers and max_parallel_workers_per_gather ."
+  },
+  {
+    "knob1": "max_parallel_workers",
+    "relation": "smaller than or equal to",
+    "knob2": "max_worker_processes",
+    "condition": null,
+    "context": "rule-based extraction",
+    "evidence_span": "Sets the maximum number of workers that the system can support for parallel operations. The default value is 8. When increasing or decreasing this value, consider also adjusting max_parallel_maintenance_workers and max_parallel_workers_per_gather . Also, note that a setting for this value which is higher than max_worker_processes will have no effect, since parallel workers are taken from the pool of worker processes established by that setting."
+  },
+  {
+    "knob1": "archive_mode",
+    "relation": "requires",
+    "knob2": "wal_level",
+    "condition": null,
+    "context": "WAL archiving and streaming replication require wal_level set to replica or higher.",
+    "evidence_span": "replica or higher must be used to enable WAL archiving ( archive_mode ) and streaming replication."
+  },
+  {
+    "knob1": "synchronous_commit",
+    "relation": "requires enabled",
+    "knob2": "synchronous_standby_names",
+    "condition": null,
+    "context": "synchronous_commit controls waiting for standby WAL processing only if synchronous_standby_names is set",
+    "evidence_span": "If synchronous_standby_names is non-empty, synchronous_commit also controls whether transaction commits will wait for their WAL records to be processed on the standby server(s)."
+  },
+  {
+    "knob1": "wal_buffers",
+    "relation": "defaults proportional to",
+    "knob2": "shared_buffers",
+    "condition": null,
+    "context": "Default size is 1/32nd of shared_buffers.",
+    "evidence_span": "The default setting of -1 selects a size equal to 1/32nd (about 3%) of shared_buffers"
+  },
+  {
+    "knob1": "archive_command",
+    "relation": "requires enabled",
+    "knob2": "archive_mode",
+    "condition": null,
+    "context": "archive_command is ignored unless archive_mode is enabled at server start",
+    "evidence_span": "It is ignored unless archive_mode was enabled at server start."
+  },
+  {
+    "knob1": "archive_timeout",
+    "relation": "works with",
+    "knob2": "archive_command",
+    "condition": null,
+    "context": "archive_timeout forces WAL segment switches to limit unarchived data age",
+    "evidence_span": "To limit how old unarchived data can be, you can set archive_timeout to force the server to switch to a new WAL segment file periodically."
+  },
+  {
+    "knob1": "max_wal_senders",
+    "relation": "requires",
+    "knob2": "wal_level",
+    "condition": null,
+    "context": "max_wal_senders requires wal_level to be set to replica or higher for standby connections.",
+    "evidence_span": "wal_level must be set to replica or higher to allow connections from standby servers."
+  },
+  {
+    "knob1": "standby.max_wal_senders",
+    "relation": "requires",
+    "knob2": "max_wal_senders",
+    "condition": null,
+    "context": "On a standby server, max_wal_senders must be set to the same or higher value than on the master.",
+    "evidence_span": "When running a standby server, you must set this parameter to the same or higher value than on the master server."
+  },
+  {
+    "knob1": "max_wal_senders",
+    "relation": "same or higher",
+    "knob2": "standby.max_wal_senders",
+    "condition": null,
+    "context": "rule-based extraction",
+    "evidence_span": "Specifies the maximum number of concurrent connections from standby servers or streaming base backup clients (i.e., the maximum number of simultaneously running WAL sender processes). The default is 10 . The value 0 means replication is disabled. Abrupt disconnection of a streaming client might leave an orphaned connection slot behind until a timeout is reached, so this parameter should be set slightly higher than the maximum number of expected clients so disconnected clients can immediately reconnect. This parameter can only be set at server start. Also, wal_level must be set to replica or higher to allow connections from standby servers. When running a standby server, you must set this parameter to the same or higher value than on the master server. Otherwise, queries will not be allowed in the standby server."
+  },
+  {
+    "knob1": "max_replication_slots",
+    "relation": "requires",
+    "knob2": "wal_level",
+    "condition": null,
+    "context": "wal_level must be replica or higher for replication slots to be used.",
+    "evidence_span": "wal_level must be set to replica or higher to allow replication slots to be used."
+  },
+  {
+    "knob1": "max_logical_replication_workers",
+    "relation": "subset of",
+    "knob2": "max_worker_processes",
+    "condition": null,
+    "context": "Logical replication workers are taken from the pool defined by max_worker_processes.",
+    "evidence_span": "Logical replication workers are taken from the pool defined by max_worker_processes ."
+  },
+  {
+    "knob1": "max_sync_workers_per_subscription",
+    "relation": "subset of",
+    "knob2": "max_logical_replication_workers",
+    "condition": null,
+    "context": "Synchronization workers are taken from the pool defined by max_logical_replication_workers.",
+    "evidence_span": "The synchronization workers are taken from the pool defined by max_logical_replication_workers ."
+  },
+  {
+    "knob1": "join_collapse_limit",
+    "relation": "greater than or equal to",
+    "knob2": "from_collapse_limit",
+    "condition": null,
+    "context": "join_collapse_limit is set the same as from_collapse_limit by default",
+    "evidence_span": "By default, this variable is set the same as from_collapse_limit"
+  },
+  {
+    "knob1": "join_collapse_limit",
+    "relation": "greater than or equal to",
+    "knob2": "geqo_threshold",
+    "condition": null,
+    "context": "Setting join_collapse_limit to geqo_threshold or more may trigger GEQO planner",
+    "evidence_span": "Setting this value to geqo_threshold or more may trigger use of the GEQO planner"
+  },
+  {
+    "knob1": "autovacuum",
+    "relation": "requires",
+    "knob2": "track_counts",
+    "condition": null,
+    "context": "autovacuum requires track_counts to be enabled to work",
+    "evidence_span": "track_counts must also be enabled for autovacuum to work"
+  },
+  {
+    "knob1": "autovacuum_vacuum_cost_delay",
+    "relation": "defaults to",
+    "knob2": "vacuum_cost_delay",
+    "condition": null,
+    "context": "rule-based extraction",
+    "evidence_span": "Specifies the cost delay value that will be used in automatic VACUUM operations. If -1 is specified, the regular vacuum_cost_delay value will be used. If this value is specified without units, it is taken as milliseconds. The default value is 2 milliseconds. This parameter can only be set in the postgresql.conf file or on the server command line; but the setting can be overridden for individual tables by changing table storage parameters."
+  },
+  {
+    "knob1": "autovacuum_vacuum_cost_limit",
+    "relation": "defaults to",
+    "knob2": "vacuum_cost_limit",
+    "condition": null,
+    "context": "rule-based extraction",
+    "evidence_span": "Specifies the cost limit value that will be used in automatic VACUUM operations. If -1 is specified (which is the default), the regular vacuum_cost_limit value will be used. Note that the value is distributed proportionally among the running autovacuum workers, if there is more than one, so that the sum of the limits for each worker does not exceed the value of this variable. This parameter can only be set in the postgresql.conf file or on the server command line; but the setting can be overridden for individual tables by changing table storage parameters. ================================================================================ URL: https://www.postgresql.org/docs/13/runtime-config-client.html"
+  },
+  {
+    "knob1": "vacuum_freeze_table_age",
+    "relation": "less than",
+    "knob2": "autovacuum_freeze_max_age",
+    "condition": null,
+    "context": "Effective value limited to 95% of autovacuum_freeze_max_age",
+    "evidence_span": "VACUUM will silently limit the effective value to 95% of autovacuum_freeze_max_age"
+  },
+  {
+    "knob1": "vacuum_freeze_min_age",
+    "relation": "less than or equal to half",
+    "knob2": "autovacuum_freeze_max_age",
+    "condition": null,
+    "context": "rule-based extraction",
+    "evidence_span": "Specifies the cutoff age (in transactions) that VACUUM should use to decide whether to freeze row versions while scanning a table. The default is 50 million transactions. Although users can set this value anywhere from zero to one billion, VACUUM will silently limit the effective value to half the value of autovacuum_freeze_max_age , so that there is not an unreasonably short time between forced autovacuums. For more information see Section 24.1.5 ."
+  },
+  {
+    "knob1": "vacuum_multixact_freeze_table_age",
+    "relation": "less than",
+    "knob2": "autovacuum_multixact_freeze_max_age",
+    "condition": null,
+    "context": "VACUUM limits effective value to 95% of autovacuum_multixact_freeze_max_age.",
+    "evidence_span": "VACUUM will silently limit the effective value to 95% of autovacuum_multixact_freeze_max_age"
+  },
+  {
+    "knob1": "vacuum_multixact_freeze_min_age",
+    "relation": "less than or equal to half",
+    "knob2": "autovacuum_multixact_freeze_max_age",
+    "condition": null,
+    "context": "rule-based extraction",
+    "evidence_span": "Specifies the cutoff age (in multixacts) that VACUUM should use to decide whether to replace multixact IDs with a newer transaction ID or multixact ID while scanning a table. The default is 5 million multixacts. Although users can set this value anywhere from zero to one billion, VACUUM will silently limit the effective value to half the value of autovacuum_multixact_freeze_max_age , so that there is not an unreasonably short time between forced autovacuums. For more information see Section 24.1.5.1 ."
+  },
+  {
+    "knob1": "max_connections",
+    "relation": "used in calculation",
+    "knob2": "max_locks_per_transaction",
+    "condition": null,
+    "context": "Lock table size calculation",
+    "evidence_span": "The shared lock table tracks locks on max_locks_per_transaction * ( max_connections + max_prepared_transactions ) objects"
+  },
+  {
+    "knob1": "max_prepared_transactions",
+    "relation": "used in calculation",
+    "knob2": "max_locks_per_transaction",
+    "condition": null,
+    "context": "Lock table size calculation",
+    "evidence_span": "The shared lock table tracks locks on max_locks_per_transaction * ( max_connections + max_prepared_transactions ) objects"
+  },
+  {
+    "knob1": "standby.max_locks_per_transaction",
+    "relation": "used in calculation",
+    "knob2": "max_locks_per_transaction",
+    "condition": null,
+    "context": "Standby server requirement",
+    "evidence_span": "When running a standby server, you must set this parameter to the same or higher value than on the master server."
+  },
+  {
+    "knob1": "max_locks_per_transaction",
+    "relation": "same or higher",
+    "knob2": "standby.max_locks_per_transaction",
+    "condition": null,
+    "context": "rule-based extraction",
+    "evidence_span": "The shared lock table tracks locks on max_locks_per_transaction * ( max_connections + max_prepared_transactions ) objects (e.g., tables); hence, no more than this many distinct objects can be locked at any one time. This parameter controls the average number of object locks allocated for each transaction; individual transactions can lock more objects as long as the locks of all transactions fit in the lock table. This is not the number of rows that can be locked; that value is unlimited. The default, 64, has historically proven sufficient, but you might need to raise this value if you have queries that touch many different tables in a single transaction, e.g., query of a parent table with many children. This parameter can only be set at server start. When running a standby server, you must set this parameter to the same or higher value than on the master server. Otherwise, queries will not be allowed in the standby server."
+  },
+  {
+    "knob1": "max_connections",
+    "relation": "used in calculation",
+    "knob2": "max_pred_locks_per_transaction",
+    "condition": null,
+    "context": "rule-based extraction",
+    "evidence_span": "The shared predicate lock table tracks locks on max_pred_locks_per_transaction * ( max_connections + max_prepared_transactions ) objects (e.g., tables); hence, no more than this many distinct objects can be locked at any one time. This parameter controls the average number of object locks allocated for each transaction; individual transactions can lock more objects as long as the locks of all transactions fit in the lock table. This is not the number of rows that can be locked; that value is unlimited. The default, 64, has generally been sufficient in testing, but you might need to raise this value if you have clients that touch many different tables in a single serializable transaction. This parameter can only be set at server start."
+  },
+  {
+    "knob1": "max_prepared_transactions",
+    "relation": "used in calculation",
+    "knob2": "max_pred_locks_per_transaction",
+    "condition": null,
+    "context": "rule-based extraction",
+    "evidence_span": "The shared predicate lock table tracks locks on max_pred_locks_per_transaction * ( max_connections + max_prepared_transactions ) objects (e.g., tables); hence, no more than this many distinct objects can be locked at any one time. This parameter controls the average number of object locks allocated for each transaction; individual transactions can lock more objects as long as the locks of all transactions fit in the lock table. This is not the number of rows that can be locked; that value is unlimited. The default, 64, has generally been sufficient in testing, but you might need to raise this value if you have clients that touch many different tables in a single serializable transaction. This parameter can only be set at server start."
+  }
+]

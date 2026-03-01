@@ -1,0 +1,238 @@
+[ 
+  {
+    "knob1": "max_connections",
+    "relation": "same or higher",
+    "knob2": "standby.max_connections",
+    "context": "When running a standby server, you must set this parameter to the same or higher value than on the master server. Otherwise, queries will not be allowed in the standby server."
+  },
+  {
+    "knob1": "superuser_reserved_connections",
+    "relation": "less than",
+    "knob2": "max_connections",
+    "context": "The default value is three connections. The value must be less than max_connections. This parameter can only be set at server start."
+  },
+  {
+    "knob1": "shared_buffers",
+    "relation": "requires larger",
+    "knob2": "max_wal_size",
+    "context": "Larger settings for shared_buffers usually require a corresponding increase in max_wal_size, in order to spread out the process of writing large quantities of new or changed data over a longer period of time."
+  },
+  {
+    "knob1": "max_prepared_transactions",
+    "relation": "greater than or equal to",
+    "knob2": "max_connections",
+    "condition": "max_prepared_transactions != 0",
+    "context": "If you are using prepared transactions, you will probably want max_prepared_transactions to be at least as large as max_connections, so that every session can have a prepared transaction pending."
+  },
+  {
+    "knob1": "max_prepared_transactions",
+    "relation": "same or higher",
+    "knob2": "standby.max_prepared_transactions",
+    "context": "When running a standby server, you must set this parameter to the same or higher value than on the master server. Otherwise, queries will not be allowed in the standby server."
+  },
+  {
+    "knob1": "max_prepared_transactions",
+    "relation": "used in calculation",
+    "knob2": "max_locks_per_transaction",
+    "context": "The shared lock table tracks locks on max_locks_per_transaction * (max_connections + max_prepared_transactions) objects."
+  },
+  {
+    "knob1": "max_prepared_transactions",
+    "relation": "used in calculation",
+    "knob2": "max_pred_locks_per_transaction",
+    "context": "The shared predicate lock table tracks locks on max_pred_locks_per_transaction * (max_connections + max_prepared_transactions) objects."
+  },
+  {
+    "knob1": "work_mem",
+    "relation": "multiplied by",
+    "knob2": "hash_mem_multiplier",
+    "context": "The memory limit for a hash table is computed by multiplying work_mem by hash_mem_multiplier."
+  },
+  {
+    "knob1": "autovacuum_work_mem",
+    "relation": "fallback to",
+    "knob2": "maintenance_work_mem",
+    "context": "It defaults to -1, indicating that the value of maintenance_work_mem should be used instead."
+  },
+  {
+    "knob1": "max_connections",
+    "relation": "used in calculation",
+    "knob2": "max_locks_per_transaction",
+    "context": "The shared lock table tracks locks on max_locks_per_transaction * (max_connections + max_prepared_transactions) objects."
+  },
+  {
+    "knob1": "max_connections",
+    "relation": "used in calculation",
+    "knob2": "max_pred_locks_per_transaction",
+    "context": "The shared predicate lock table tracks locks on max_pred_locks_per_transaction * (max_connections + max_prepared_transactions) objects."
+  },
+  {
+    "knob1": "bgwriter_delay",
+    "relation": "interacts with",
+    "knob2": "bgwriter_lru_maxpages",
+    "context": "The number of buffers written per round (bgwriter_lru_maxpages) is applied after each bgwriter_delay sleep."
+  },
+  {
+    "knob1": "max_worker_processes",
+    "relation": "same or higher",
+    "knob2": "standby.max_worker_processes",
+    "context": "When running a standby server, you must set this parameter to the same or higher value than on the master server. Otherwise, queries will not be allowed in the standby server."
+  },
+  {
+    "knob1": "max_worker_processes",
+    "relation": "consider adjusting",
+    "knob2": "max_parallel_workers_per_gather",
+    "context": "When changing this value, consider also adjusting max_parallel_workers, max_parallel_maintenance_workers, and max_parallel_workers_per_gather."
+  },
+  {
+    "knob1": "max_worker_processes",
+    "relation": "consider adjusting",
+    "knob2": "max_parallel_maintenance_workers",
+    "context": "When changing this value, consider also adjusting max_parallel_workers, max_parallel_maintenance_workers, and max_parallel_workers_per_gather."
+  },
+  {
+    "knob1": "max_worker_processes",
+    "relation": "consider adjusting",
+    "knob2": "max_parallel_workers_per_gather",
+    "context": "When changing this value, consider also adjusting max_parallel_workers, max_parallel_maintenance_workers, and max_parallel_workers_per_gather."
+  },
+  {
+    "knob1": "max_parallel_workers_per_gather",
+    "relation": "bounded by",
+    "knob2": "max_parallel_workers",
+    "context": "The number of workers per gather node is limited by max_parallel_workers; larger values have no effect."
+  },
+  {
+    "knob1": "max_parallel_workers_per_gather",
+    "relation": "bounded by",
+    "knob2": "max_worker_processes",
+    "context": "Since parallel workers are taken from worker process pool, max_worker_processes also limits this value."
+  },
+  {
+    "knob1": "max_parallel_maintenance_workers",
+    "relation": "bounded by",
+    "knob2": "max_parallel_workers",
+    "context": "The number of parallel workers used for maintenance is limited by max_parallel_workers."
+  },
+  {
+    "knob1": "max_parallel_workers",
+    "relation": "smaller than or equal to",
+    "knob2": "max_worker_processes",
+    "context": "Also, note that a setting for this value which is higher than max_worker_processes will have no effect, since parallel workers are taken from the pool of worker processes established by that setting."
+  },
+  {
+    "knob1": "wal_buffers",
+    "relation": "defaults proportional to",
+    "knob2": "shared_buffers",
+    "context": "The default setting of -1 selects a size equal to 1/32nd (about 3%) of shared_buffers, but not less than 64kB nor more than the size of one WAL segment, typically 16MB."
+  },
+  {
+    "knob1": "archive_command",
+    "relation": "requires enabled",
+    "knob2": "archive_mode",
+    "context": "It is ignored unless archive_mode was enabled at server start. If archive_command is an empty string (the default) while archive_mode is enabled, WAL archiving is temporarily disabled, but the server continues to accumulate WAL segment files in the expectation that a command will soon be provided."
+  },
+  {
+    "knob1": "archive_timeout",
+    "relation": "works with",
+    "knob2": "archive_command",
+    "context": "To limit how old unarchived data can be, you can set archive_timeout to force the server to switch to a new WAL segment file periodically. "
+  },
+  {
+    "knob1": "max_wal_senders",
+    "relation": "requires",
+    "knob2": "wal_level",
+    "context": "Also, wal_level must be set to replica or higher to allow connections from standby servers."
+  },
+  {
+    "knob1": "max_replication_slots",
+    "relation": "requires",
+    "knob2": "wal_level",
+    "context": "Also, wal_level must be set to replica or higher to allow replication slots to be used."
+  },
+  {
+    "knob1": "synchronous_standby_names",
+    "relation": "requires enabled",
+    "knob2": "synchronous_commit",
+    "context": "synchronous_standby_names has no effect unless synchronous_commit is set to on, remote_apply, or remote_write."
+  },
+  {
+    "knob1": "max_logical_replication_workers",
+    "relation": "subset of",
+    "knob2": "max_worker_processes",
+    "context": "Logical replication workers are taken from the pool defined by max_worker_processes."
+  },
+  {
+    "knob1": "max_sync_workers_per_subscription",
+    "relation": "subset of",
+    "knob2": "max_logical_replication_workers",
+    "context": "The synchronization workers are taken from the pool defined by max_logical_replication_workers."
+  },
+  {
+    "knob1": "random_page_cost",
+    "relation": "interacts with",
+    "knob2": "seq_page_cost",
+    "context": "Reducing this value relative to seq_page_cost will cause the system to prefer index scans; raising it will make index scans look relatively more expensive."
+  },
+  {
+    "knob1": "from_collapse_limit",
+    "relation": "greater than or equal to",
+    "knob2": "geqo_threshold",
+    "context": "Setting this value to geqo_threshold or more may trigger use of the GEQO planner, resulting in non-optimal plans."
+  },
+  {
+    "knob1": "join_collapse_limit",
+    "relation": "greater than or equal to",
+    "knob2": "geqo_threshold",
+    "context": "Setting this value to geqo_threshold or more may trigger use of the GEQO planner, resulting in non-optimal plans."
+  },
+  {
+    "knob1": "autovacuum",
+    "relation": "requires",
+    "knob2": "track_counts",
+    "context": "This is on by default; however, track_counts must also be enabled for autovacuum to work."
+  },
+  {
+    "knob1": "autovacuum_vacuum_cost_delay",
+    "relation": "defaults to",
+    "knob2": "vacuum_cost_delay",
+    "context": "If -1 is specified, the regular vacuum_cost_delay value will be used."
+  },
+  {
+    "knob1": "autovacuum_vacuum_cost_limit",
+    "relation": "defaults to",
+    "knob2": "vacuum_cost_limit",
+    "context": "If -1 is specified (which is the default), the regular vacuum_cost_limit value will be used."
+  },
+  {
+    "knob1": "vacuum_freeze_table_age",
+    "relation": "less than",
+    "knob2": "autovacuum_freeze_max_age",
+    "context": "VACUUM will silently limit the effective value to 95% of autovacuum_freeze_max_age, so that a periodic manual VACUUM has a chance to run before an anti-wraparound autovacuum is launched for the table."
+  },
+  {
+    "knob1": "vacuum_freeze_min_age",
+    "relation": "less than or equal to half",
+    "knob2": "autovacuum_freeze_max_age",
+    "context": "VACUUM will silently limit the effective value to half the value of autovacuum_freeze_max_age, so that there is not an unreasonably short time between forced autovacuums."
+  },
+  {
+    "knob1": "vacuum_multixact_freeze_table_age",
+    "relation": "less than",
+    "knob2": "autovacuum_multixact_freeze_max_age",
+    "context": "VACUUM will silently limit the effective value to 95% of autovacuum_multixact_freeze_max_age, so that a periodic manual VACUUM has a chance to run before an anti-wraparound is launched for the table."
+  },
+  {
+    "knob1": "vacuum_multixact_freeze_min_age",
+    "relation": "less than or equal to half",
+    "knob2": "autovacuum_multixact_freeze_max_age",
+    "context": "VACUUM will silently limit the effective value to half the value of autovacuum_multixact_freeze_max_age, so that there is not an unreasonably short time between forced autovacuums."
+  },
+  {
+    "knob1": "max_locks_per_transaction",
+    "relation": "same or higher",
+    "knob2": "standby.max_locks_per_transaction",
+    "context": "When running a standby server, you must set this parameter to the same or higher value than on the master server. Otherwise, queries will not be allowed in the standby server."
+  }
+  
+]
