@@ -4,7 +4,7 @@ This file is a reproducible guide for running `src/extractor/extract_constraints
 
 The script includes the full 6-step workflow (candidate retrieval -> structured extraction -> self-reflection/judging -> normalization/repair -> rule augmentation -> confidence filtering).
 
-## 0) Working Directory and Execution Mode (Important)
+## 0) Working Directory and Execution Mode
 
 You can use either mode:
 
@@ -16,7 +16,6 @@ All examples below use **Mode A** (least likely to hit path issues).
 ## 1) Environment Setup
 
 ```bash
-cd /Users/zq/Desktop/CATune
 python3 -m venv .venv
 source .venv/bin/activate
 python3 -m pip install --upgrade pip
@@ -67,9 +66,9 @@ python3 src/extractor/extract_constraints.py \
   --out-normalized src/extractor/norm_sanity.json
 ```
 
-## 5) Run the Full Paper Workflow
+## 5) Run the Full Workflow
 
-### 5.1 DeepSeek (default)
+### 5.1 DeepSeek
 
 ```bash
 python3 src/extractor/extract_constraints.py \
@@ -150,7 +149,7 @@ python3 src/extractor/extract_constraints.py \
   --out-normalized src/extractor/constraints_paper.json
 ```
 
-## 7) Normalize-Only Re-Run (No New API Calls)
+## 7) Normalize-Only Re-Run
 
 ```bash
 python3 src/extractor/extract_constraints.py \
