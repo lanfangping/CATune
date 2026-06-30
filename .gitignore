@@ -7,3 +7,4 @@ src/dbms/queries/tpcc/benchbase.log
 src/dbms/queries/tpcc/tpcc_test.log
 wandb
 visualize/plots_results
+.DS_Store
