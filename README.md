@@ -1,4 +1,31 @@
-# CATune: CATune: Structural Constraint-Aware Bayesian Optimization for DBMS Configuration Tuning
+<img align='left' src='figs/catune_logo.png' width='180'>
+
+<div align="center">
+  <h1>CATune: Structural Constraint-Aware Bayesian Optimization for DBMS Configuration Tuning</h1>
+  <a href="https://awesome.re">
+    <img src="https://awesome.re/badge.svg" alt="Awesome">
+  </a>
+  <a href="https://img.shields.io/badge/PRs-Welcome-red">
+    <img src="https://img.shields.io/badge/PRs-Welcome-red" alt="PRs Welcome">
+  </a>
+  <!-- <a href="https://img.shields.io/github/last-commit/withinmiaov/A-Survey-on-Mixture-of-Experts?color=green">
+    <img src="https://img.shields.io/github/last-commit/withinmiaov/A-Survey-on-Mixture-of-Experts?color=green" alt="Last Commit">
+  </a> -->
+</div>
+
+🎯 Modern DBMSs expose hundreds of configuration knobs, resulting in a high-dimensional and heterogeneous search space that makes automated tuning costly. Existing ML-based tuning systems typically treat the configuration domain as box-constrained and rely on workload feedback to implicitly capture inter-knob relation-ships, leading to wasted evaluations of invalid configurations.
+
+💡 DBMS documentation specifies deterministic knob dependency constraints-particularly ordering constraints-that characterize structurally valid regions of the configuration space. We present CATUNE, a constraint-aware Bayesian optimization (BO) framework that models deterministic inter-knob ordering constraints as structural components of the search domain. Instead of learning feasibility boundaries through sampled violations, CATunE performs optimization within a constraint-consistent sub-space.
+
+
+
+
+> [!IMPORTANT]
+> **Good news! :tada: Our paper has been successfully accepted by PVLDB Volume 19 . :fire::fire::fire:**
+>
+> Please find our full version paper: [technical report](https://github.com/lanfangping/CATune/blob/main/docs/Constraint_aware_DB_Tuning__Tech_Report.pdf)
+>
+> Please let us know if you discover any mistakes or have suggestions by emailing us: fangping.lan@temple.edu | fangpinglan0116@gmail.com
 
 ## Installation
 
@@ -7,7 +34,7 @@
 # start Postgres image
 bash docker/start.sh
 
-# stop POstgres image
+# stop Postgres image
 bash docker/stop.sh
 ```
 
@@ -104,4 +131,9 @@ PYTHONPATH=src python src/run_SMAC_multipenalty.py --task='smac_multipenalty' --
 
 ```bash
 PYTHONPATH="src:src/GPTuner/src" python src/run_GPTuner.py --task='gptuner' --workload='tpcc' --dbms_name='postgres' --timeout=100 --trials=200 --initials=10 --workload_config_path='src/optimizer/configs/postgres/tpcc_config.xml' --tag='baseline' --model='gpt-5.2' --seed=20 
+```
+
+### Cite
+```
+
 ```
