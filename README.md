@@ -21,7 +21,7 @@
 
 
 > [!IMPORTANT]
-> **Good news! :tada: Our paper has been successfully accepted by PVLDB Volume 19 . :fire::fire::fire:**
+> **Good news! :tada: Our paper has been successfully accepted by PVLDB Volume 19 (PVLDB'27) . :fire::fire::fire:**
 >
 > Please find our full version paper: [technical report](https://github.com/lanfangping/CATune/blob/main/docs/Constraint_aware_DB_Tuning__Tech_Report.pdf)
 >
